@@ -2,6 +2,7 @@ package com.snake.roguelike.model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -61,4 +62,89 @@ public class LevelGeneratorTest {
     void testImmutability(){
         assertThrows(UnsupportedOperationException.class, () -> obstacles.add(new Point(0, 0)));
     }
+
+    @Test
+    void testCleanMapIsFullConnected(){
+        assertTrue(level.isFullyConnected(Set.of(), snakeSpawn));
+    }
+
+    @Test
+    void testDisconnectedMapReturnsFalse(){
+        Set<Point> walls = new HashSet<>();
+        for(int y = 0; y < 20; y++){
+            walls.add(new Point(5, y));
+        }
+
+        assertFalse(level.isFullyConnected(walls, snakeSpawn));
+    }
+
+    @Test
+    void testIsolatedSingleCellReturnsFalse(){
+        Set<Point> walls = new HashSet<>();
+
+        walls.add(new Point(1, 2));
+        walls.add(new Point(3, 2));
+        walls.add(new Point(2, 1));
+        walls.add(new Point(2, 3));
+
+        assertFalse(level.isFullyConnected(walls, snakeSpawn));
+    }
+
+    @Test
+    void testDeadEndDetectionInsideMap(){
+        Set<Point> walls = new HashSet<>();
+
+        walls.add(new Point(4, 5));
+        walls.add(new Point(6, 5));
+        walls.add(new Point(5, 4));
+
+        assertTrue(level.hasDeadEnds(walls));
+    }
+
+    @Test
+    void testDeadEndDetectionInCorner(){
+        Set<Point> walls = new HashSet<>();
+
+        walls.add(new Point(1, 0));
+
+        assertTrue(level.hasDeadEnds(walls));
+    }
+
+    @Test
+    void testCleanMapHasNoDeadEnds(){
+        Set<Point> walls = new HashSet<>();
+
+        assertFalse(level.hasDeadEnds(walls));
+    }
+
+     @Test
+    void testGenerateValidLevelProducesConsistentArena(){
+        Set<Point> validLevel = level.generateValidLevel(20, snakeSpawn, 50);
+
+        assertNotEquals(null, validLevel);
+        assertFalse(validLevel.isEmpty());
+        assertFalse(level.hasDeadEnds(validLevel));
+        assertTrue(level.isFullyConnected(validLevel, snakeSpawn));
+     }
+
+     @Test
+    void testGenerateValidLevelPerformanceUnder300ms(){
+         long start = System.currentTimeMillis();
+
+         for(int i = 0; i < 30; i++)
+            level.generateValidLevel(25, snakeSpawn, 30);
+
+         long end = System.currentTimeMillis();
+
+         long res = end - start;
+
+         assertTrue(res < 300);
+     }
+
+     @Test
+    void testInvalidArgumentsInGenerateValidLevel(){
+        assertThrows(NullPointerException.class, () -> level.generateValidLevel(25, null, 30));
+        assertThrows(IllegalArgumentException.class, () -> level.generateValidLevel(25, snakeSpawn, 0));
+        assertThrows(IllegalArgumentException.class, () -> level.generateValidLevel(25, snakeSpawn, -5));
+     }
 }

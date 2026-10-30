@@ -11,8 +11,8 @@ public class LevelGenerator {
 
     public LevelGenerator(int width, int height, Random random){
         if(width < 10 || height < 10)
-            throw new IllegalArgumentException("Width and height must be more then 10");
-        Objects.requireNonNull(random, "Random must not be null");
+            throw new IllegalArgumentException("width and height must be more then 10");
+        Objects.requireNonNull(random, "random must not be null");
 
         this.width = width;
         this.height = height;
@@ -106,5 +106,90 @@ public class LevelGenerator {
         }
 
         return true;
+    }
+
+    boolean hasDeadEnds(Set<Point> walls){
+        int[][] directions = {
+                {0, -1},
+                {0, 1},
+                {-1, 0},
+                {1, 0}
+        };
+
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                Point current = new Point(x, y);
+
+                if(walls.contains(current))
+                    continue;
+
+                int wallNeighbors = 0;
+
+                for(int[] direction : directions){
+                    int nx = x + direction[0];
+                    int ny = y + direction[1];
+
+                    if(nx < 0 || nx >= width || ny < 0 || ny >= height || walls.contains(new Point(nx, ny)))
+                        wallNeighbors++;
+                }
+                if(wallNeighbors >= 3)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    boolean isFullyConnected(Set<Point> walls, Point startPoint){
+        int expectedFree = (width * height) - walls.size();
+
+        Queue<Point> queue = new ArrayDeque<>();
+        Set<Point> visited = new HashSet<>();
+
+        queue.add(startPoint);
+        visited.add(startPoint);
+
+        int[][] directions = {
+                {0, -1},
+                {0, 1},
+                {-1, 0},
+                {1, 0}
+        };
+
+        while(!queue.isEmpty()){
+            Point current = queue.poll();
+
+            for(int[] direction : directions){
+                int nx = current.x() + direction[0];
+                int ny = current.y() + direction[1];
+
+                if(nx < 0 || nx >= width || ny < 0 || ny >= height)
+                    continue;
+
+                Point neighbor = new Point(nx, ny);
+
+                if(walls.contains(neighbor) || visited.contains(neighbor))
+                    continue;
+
+                visited.add(neighbor);
+                queue.add(neighbor);
+            }
+        }
+        return visited.size() == expectedFree;
+    }
+
+    public Set<Point> generateValidLevel(int obstacleCount, Point startPoint, int maxRetries){
+        if(startPoint == null)
+            throw new NullPointerException("startPoint can not be null");
+
+        if(maxRetries <= 0)
+            throw new IllegalArgumentException("maxRetries must be positive");
+
+        for(int i = 0; i < maxRetries; i++) {
+            Set<Point> obstacles = generateObstacles(obstacleCount, startPoint);
+
+            if ((!hasDeadEnds(obstacles)) && isFullyConnected(obstacles, startPoint))
+                return obstacles;
+        }
+        return Set.of();
     }
 }
