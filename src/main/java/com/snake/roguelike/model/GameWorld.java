@@ -15,7 +15,7 @@ public class GameWorld {
     private int score;
     private long ticksElapsed;
 
-    GameWorld(int width, int height, Snake snake, Set<Point> obstacles, GameState initialState){
+    GameWorld(int width, int height, Snake snake, Set<Point> obstacles, GameState initialState) {
         if(width < 10)
             throw new IllegalArgumentException("width must be at least 10");
 
@@ -29,7 +29,7 @@ public class GameWorld {
         this.height = height;
     }
 
-    public static GameWorld createDefault(int width, int height, LevelGenerator generator, int obstaclesCount){
+    public static GameWorld createDefault(int width, int height, LevelGenerator generator, int obstaclesCount) {
         Point center = new Point(width / 2, height / 2);
 
         Snake snake = new Snake(center, 3, Direction.RIGHT);
@@ -38,7 +38,7 @@ public class GameWorld {
         return new GameWorld(width, height, snake, validObstacles, GameState.READY);
     }
 
-    public void tick(Direction requestedDirection){
+    public void tick(Direction requestedDirection) {
         if(this.state != PLAYING)
             return;
 
@@ -50,17 +50,17 @@ public class GameWorld {
 
         Point currentHead = snake.getHead();
         Point nextHead = currentHead.move(effectiveDirection);
-        if(!nextHead.isWithinBounds(this.width, this.height)){
+        if(!nextHead.isWithinBounds(this.width, this.height)) {
             this.state = GAME_OVER;
             return;
         }
 
-        if(this.obstacles.contains(nextHead)){
+        if(this.obstacles.contains(nextHead)) {
             this.state = GAME_OVER;
             return;
         }
 
-        if(snake.willCollideWithSelf(nextHead, false)){
+        if(snake.willCollideWithSelf(nextHead, false)) {
             this.state = GAME_OVER;
             return;
         }
@@ -69,49 +69,49 @@ public class GameWorld {
         this.ticksElapsed = this.ticksElapsed + 1;
     }
 
-    public void start(){
+    public void start() {
         if(this.state == READY)
             this.state = PLAYING;
     }
 
-    public void togglePause(){
+    public void togglePause() {
         if(this.state == PLAYING)
             this.state = PAUSED;
         else if(this.state == PAUSED)
             this.state = PLAYING;
     }
 
-    public GameWorld restart(LevelGenerator generator, int obstacleCount){
+    public GameWorld restart(LevelGenerator generator, int obstacleCount) {
         GameWorld newWorld = createDefault(width, height, generator, obstacleCount);
         newWorld.start();
         return newWorld;
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return this.width;
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return this.height;
     }
 
-    public GameState getState(){
+    public GameState getState() {
         return this.state;
     }
 
-    public int getScore(){
+    public int getScore() {
         return this.score;
     }
 
-    public long getTicksElapsed(){
+    public long getTicksElapsed() {
         return this.ticksElapsed;
     }
 
-    public Snake getSnake(){
+    public Snake getSnake() {
         return this.snake;
     }
 
-    public Set<Point> getObstacles(){
+    public Set<Point> getObstacles() {
         return Collections.unmodifiableSet(this.obstacles);
     }
 }

@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DirectionTest {
     @Test
-    void shouldIdentifyOppositeDirections(){
+    void shouldIdentifyOppositeDirections() {
         assertTrue(Direction.UP.isOpposite(Direction.DOWN));
         assertTrue(Direction.LEFT.isOpposite(Direction.RIGHT));
 
@@ -16,12 +16,12 @@ public class DirectionTest {
     }
 
     @Test
-    void shouldReturnFalseWhenCheckingOppositeWithNull(){
+    void shouldReturnFalseWhenCheckingOppositeWithNull() {
         assertFalse(Direction.UP.isOpposite(null));
     }
 
     @Test
-    void shouldInvertDirections(){
+    void shouldInvertDirections() {
         assertEquals(Direction.DOWN, Direction.UP.inverted());
         assertEquals(Direction.UP, Direction.DOWN.inverted());
         assertEquals(Direction.LEFT, Direction.RIGHT.inverted());
@@ -29,8 +29,8 @@ public class DirectionTest {
     }
 
     @Test
-    void shouldMaintainIdempotencyOfDoubleInversion(){
-        for(Direction dir : Direction.values()){
+    void shouldMaintainIdempotencyOfDoubleInversion() {
+        for(Direction dir : Direction.values()) {
             assertEquals(dir, dir.inverted().inverted());
         }
     }

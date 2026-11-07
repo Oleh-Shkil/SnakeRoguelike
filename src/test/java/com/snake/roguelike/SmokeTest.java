@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class SmokeTest {
     @Test
-    void shouldVerifyTestingEnvironmentSetup(){
+    void shouldVerifyTestingEnvironmentSetup() {
         Assertions.assertTrue(true);
     }
 }

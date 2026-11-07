@@ -15,7 +15,7 @@ public class LevelGeneratorTest {
 
 
     @Test
-    void testObstaclesStayWithinBounds(){
+    void testObstaclesStayWithinBounds() {
         for(Point p : obstacles){
             assertTrue(p.isWithinBounds(20, 20), "The point have to be in bounds");
         }
@@ -23,14 +23,14 @@ public class LevelGeneratorTest {
     }
 
     @Test
-    void testSafeZoneRemainsEmpty(){
+    void testSafeZoneRemainsEmpty() {
         for(Point p : obstacles){
             assertTrue(Math.abs(p.x() - snakeSpawn.x()) > 2 || Math.abs(p.y() - snakeSpawn.y()) > 2);
         }
     }
 
     @Test
-    void testDeterministicGenerationWithSeed(){
+    void testDeterministicGenerationWithSeed() {
         LevelGenerator generatorA = new LevelGenerator(20, 20, new Random(42L));
         LevelGenerator generatorB = new LevelGenerator(20, 20, new Random(42L));
 
@@ -41,7 +41,7 @@ public class LevelGeneratorTest {
     }
 
     @Test
-    void testZeroOrNegativeObstacleCount(){
+    void testZeroOrNegativeObstacleCount() {
         Set<Point> A = level.generateObstacles(0, snakeSpawn);
         Set<Point> B = level.generateObstacles(-1, snakeSpawn);
 
@@ -50,7 +50,7 @@ public class LevelGeneratorTest {
     }
 
     @Test
-    void testCornerSpawn(){
+    void testCornerSpawn() {
         Point cornerSpawn = new Point(0, 0);
         Set<Point> cornerObstacles = level.generateObstacles(20, cornerSpawn);
         for(Point p : cornerObstacles){
@@ -59,19 +59,19 @@ public class LevelGeneratorTest {
     }
 
     @Test
-    void testImmutability(){
+    void testImmutability() {
         assertThrows(UnsupportedOperationException.class, () -> obstacles.add(new Point(0, 0)));
     }
 
     @Test
-    void testCleanMapIsFullConnected(){
+    void testCleanMapIsFullConnected() {
         assertTrue(level.isFullyConnected(Set.of(), snakeSpawn));
     }
 
     @Test
-    void testDisconnectedMapReturnsFalse(){
+    void testDisconnectedMapReturnsFalse() {
         Set<Point> walls = new HashSet<>();
-        for(int y = 0; y < 20; y++){
+        for(int y = 0; y < 20; y++) {
             walls.add(new Point(5, y));
         }
 
@@ -79,7 +79,7 @@ public class LevelGeneratorTest {
     }
 
     @Test
-    void testIsolatedSingleCellReturnsFalse(){
+    void testIsolatedSingleCellReturnsFalse() {
         Set<Point> walls = new HashSet<>();
 
         walls.add(new Point(1, 2));
@@ -91,7 +91,7 @@ public class LevelGeneratorTest {
     }
 
     @Test
-    void testDeadEndDetectionInsideMap(){
+    void testDeadEndDetectionInsideMap() {
         Set<Point> walls = new HashSet<>();
 
         walls.add(new Point(4, 5));
@@ -111,14 +111,14 @@ public class LevelGeneratorTest {
     }
 
     @Test
-    void testCleanMapHasNoDeadEnds(){
+    void testCleanMapHasNoDeadEnds() {
         Set<Point> walls = new HashSet<>();
 
         assertFalse(level.hasDeadEnds(walls));
     }
 
      @Test
-    void testGenerateValidLevelProducesConsistentArena(){
+    void testGenerateValidLevelProducesConsistentArena() {
         Set<Point> validLevel = level.generateValidLevel(20, snakeSpawn, 50);
 
         assertNotEquals(null, validLevel);
@@ -128,7 +128,7 @@ public class LevelGeneratorTest {
      }
 
      @Test
-    void testGenerateValidLevelPerformanceUnder300ms(){
+    void testGenerateValidLevelPerformanceUnder300ms() {
          long start = System.currentTimeMillis();
 
          for(int i = 0; i < 30; i++)
@@ -142,7 +142,7 @@ public class LevelGeneratorTest {
      }
 
      @Test
-    void testInvalidArgumentsInGenerateValidLevel(){
+    void testInvalidArgumentsInGenerateValidLevel() {
         assertThrows(NullPointerException.class, () -> level.generateValidLevel(25, null, 30));
         assertThrows(IllegalArgumentException.class, () -> level.generateValidLevel(25, snakeSpawn, 0));
         assertThrows(IllegalArgumentException.class, () -> level.generateValidLevel(25, snakeSpawn, -5));
