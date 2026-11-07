@@ -41,7 +41,7 @@ public class PointTest {
     }
 
     @Test
-    void shouldValidateBoundsCorrectly(){
+    void shouldValidateBoundsCorrectly() {
         int width = 20;
         int height = 10;
 
@@ -58,7 +58,7 @@ public class PointTest {
     }
 
     @Test
-    void shouldVerifyEqualityAndHashCode(){
+    void shouldVerifyEqualityAndHashCode() {
         Point p1 = new Point(3, 3);
         Point p2 = new Point(3, 3);
 

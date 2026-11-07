@@ -7,7 +7,7 @@ public class Snake {
     private final Set<Point> bodySet;
     private Direction direction;
 
-    public Snake(Point initialHead, int initialLength, Direction direction){
+    public Snake(Point initialHead, int initialLength, Direction direction) {
         Objects.requireNonNull(initialHead);
         Objects.requireNonNull(direction);
         if (initialLength < 1)
@@ -28,19 +28,19 @@ public class Snake {
         }
     }
 
-    public Point getHead(){
+    public Point getHead() {
         return body.getFirst();
     }
 
-    public Point getTail(){
+    public Point getTail() {
         return body.getLast();
     }
 
-    public int getLength(){
+    public int getLength() {
         return body.size();
     }
 
-    public Direction getDirection(){
+    public Direction getDirection() {
         return this.direction;
     }
 
@@ -48,18 +48,18 @@ public class Snake {
         return bodySet.contains(point);
     }
 
-    public List<Point> getSegments(){
+    public List<Point> getSegments() {
         return List.copyOf(body);
     }
 
-    public void setDirection(Direction newDirection){
+    public void setDirection(Direction newDirection) {
         if(newDirection == null)
             throw new NullPointerException("Direction must not be null");
         if(!direction.isOpposite(newDirection))
             this.direction = newDirection;
     }
 
-    public void move(Point newHead, boolean grow){
+    public void move(Point newHead, boolean grow) {
         Objects.requireNonNull(newHead, "New head cannot be null");
         if(!grow){
             Point removedTail = body.removeLast();
@@ -69,7 +69,7 @@ public class Snake {
         bodySet.add(newHead);
     }
 
-    public boolean willCollideWithSelf(Point nextHead, boolean willGrow){
+    public boolean willCollideWithSelf(Point nextHead, boolean willGrow) {
         if (!occupies(nextHead)) {
             return false;
         }
@@ -79,9 +79,9 @@ public class Snake {
         return true;
     }
 
-    public void shrink(int segmentsToRemove, int minLength){
-        for(int i = 1; i <= segmentsToRemove; i++){
-            if(body.size() > minLength){
+    public void shrink(int segmentsToRemove, int minLength) {
+        for(int i = 1; i <= segmentsToRemove; i++) {
+            if(body.size() > minLength) {
                 Point removed = body.removeLast();
                 bodySet.remove(removed);
             }

@@ -12,7 +12,7 @@ public class SnakeTest {
     Point head = new Point(5, 5);
 
     @Test
-    void testInitialization(){
+    void testInitialization() {
         Snake snake = new Snake(head, 3, Direction.RIGHT);
 
         assertEquals(3, snake.getLength());
@@ -26,14 +26,14 @@ public class SnakeTest {
     }
 
     @Test
-    void testConstructorValidation(){
+    void testConstructorValidation() {
         assertThrows(NullPointerException.class, () -> new Snake(null, 3, Direction.RIGHT));
         assertThrows(NullPointerException.class, () -> new Snake(head, 3, null));
         assertThrows(IllegalArgumentException.class, () -> new Snake(head, 0, Direction.RIGHT));
     }
 
     @Test
-    void testMoveWithoutGrowth(){
+    void testMoveWithoutGrowth() {
         Snake snake = new Snake(head, 3, Direction.RIGHT);
 
         snake.move(new Point(6, 5), false);
@@ -46,7 +46,7 @@ public class SnakeTest {
     }
 
     @Test
-    void testMoveWithGrowth(){
+    void testMoveWithGrowth() {
         Snake snake = new Snake(head, 3, Direction.RIGHT);
 
         snake.move(new Point(6, 5), true);
@@ -57,7 +57,7 @@ public class SnakeTest {
     }
 
     @Test
-    void testDirectionControlAnd180Reversal(){
+    void testDirectionControlAnd180Reversal() {
         Snake snake = new Snake(head, 3, Direction.UP);
 
         //90°
@@ -72,7 +72,7 @@ public class SnakeTest {
     }
 
     @Test
-    void testSelfCollisionDetection(){
+    void testSelfCollisionDetection() {
         Snake snake = new Snake(head, 4, Direction.RIGHT);
 
         assertFalse(snake.willCollideWithSelf(new Point(6, 5), false));
@@ -82,7 +82,7 @@ public class SnakeTest {
     }
 
     @Test
-    void testShrink(){
+    void testShrink() {
         Snake snake = new Snake(head, 5, Direction.RIGHT);
 
         snake.shrink(3, 3);
@@ -93,7 +93,7 @@ public class SnakeTest {
     }
 
     @Test
-    void testImmutabilityOfExposedSegments(){
+    void testImmutabilityOfExposedSegments() {
         Snake snake = new Snake(head, 3, Direction.UP);
 
         List<Point> segments = snake.getSegments();

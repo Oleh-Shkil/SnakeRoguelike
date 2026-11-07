@@ -9,7 +9,7 @@ public class LevelGenerator {
     private final Random random;
     public static final int SAFE_ZONE_RADIUS = 2;
 
-    public LevelGenerator(int width, int height, Random random){
+    public LevelGenerator(int width, int height, Random random) {
         if(width < 10 || height < 10)
             throw new IllegalArgumentException("width and height must be more then 10");
         Objects.requireNonNull(random, "random must not be null");
@@ -19,11 +19,11 @@ public class LevelGenerator {
         this.random = random;
     }
 
-    public LevelGenerator(int width, int height){
+    public LevelGenerator(int width, int height) {
         this(width, height, new Random());
     }
 
-    public Set<Point> generateObstacles(int obstacleCount, Point snakeSpawn){
+    public Set<Point> generateObstacles(int obstacleCount, Point snakeSpawn) {
         if(obstacleCount <= 0)
             return Set.of();
 
@@ -51,7 +51,7 @@ public class LevelGenerator {
 
             List<Point> shapePoints = createCandidateShape(candidate, shapeType, length);
 
-            if(canPlaceShape(shapePoints, snakeSpawn, obstacles)){
+            if(canPlaceShape(shapePoints, snakeSpawn, obstacles)) {
                   for(Point shapePoint : shapePoints)
                       if(obstacles.size() < effectiveTarget)
                         obstacles.add(shapePoint);
@@ -60,29 +60,29 @@ public class LevelGenerator {
         return Collections.unmodifiableSet(obstacles);
     }
 
-    private boolean isInsideSafeZone(Point point, Point snakeSpawn){
+    private boolean isInsideSafeZone(Point point, Point snakeSpawn) {
         return Math.abs(point.x() - snakeSpawn.x()) <= SAFE_ZONE_RADIUS && Math.abs(point.y() - snakeSpawn.y()) <= SAFE_ZONE_RADIUS;
     }
 
-    private List<Point> createCandidateShape(Point origin, int shapeType, int length){
+    private List<Point> createCandidateShape(Point origin, int shapeType, int length) {
         List<Point> points = new ArrayList<>();
 
-        switch(shapeType){
+        switch(shapeType) {
             case 0:// Single point
                 points.add(new Point(origin.x(), origin.y()));
                 break;
 
             case 1:// Line
-                for(int i = 0; i < length; i++){
+                for(int i = 0; i < length; i++) {
                     points.add(new Point(origin.x() + i, origin.y()));
                 }
                 break;
 
             case 2:// Angle (L-shape)
-                for(int i = 0; i < length; i++){
+                for(int i = 0; i < length; i++) {
                     points.add(new Point(origin.x() + i, origin.y()));
                 }
-                for(int i = 1; i < length; i++){
+                for(int i = 1; i < length; i++) {
                     points.add(new Point(origin.x() + length - 1, origin.y() + i));
                 }
                 break;
@@ -93,7 +93,7 @@ public class LevelGenerator {
         return points;
     }
 
-    private boolean canPlaceShape(List<Point> shape, Point snakeSpawn, Set<Point> currentWalls){
+    private boolean canPlaceShape(List<Point> shape, Point snakeSpawn, Set<Point> currentWalls) {
         for(Point point : shape){
             if(!point.isWithinBounds(width, height))
                 return false;
@@ -108,7 +108,7 @@ public class LevelGenerator {
         return true;
     }
 
-    boolean hasDeadEnds(Set<Point> walls){
+    boolean hasDeadEnds(Set<Point> walls) {
         int[][] directions = {
                 {0, -1},
                 {0, 1},
@@ -116,7 +116,7 @@ public class LevelGenerator {
                 {1, 0}
         };
 
-        for(int y = 0; y < height; y++){
+        for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++){
                 Point current = new Point(x, y);
 
@@ -125,7 +125,7 @@ public class LevelGenerator {
 
                 int wallNeighbors = 0;
 
-                for(int[] direction : directions){
+                for(int[] direction : directions) {
                     int nx = x + direction[0];
                     int ny = y + direction[1];
 
@@ -139,7 +139,7 @@ public class LevelGenerator {
         return false;
     }
 
-    boolean isFullyConnected(Set<Point> walls, Point startPoint){
+    boolean isFullyConnected(Set<Point> walls, Point startPoint) {
         int expectedFree = (width * height) - walls.size();
 
         Queue<Point> queue = new ArrayDeque<>();
@@ -155,10 +155,10 @@ public class LevelGenerator {
                 {1, 0}
         };
 
-        while(!queue.isEmpty()){
+        while(!queue.isEmpty()) {
             Point current = queue.poll();
 
-            for(int[] direction : directions){
+            for(int[] direction : directions) {
                 int nx = current.x() + direction[0];
                 int ny = current.y() + direction[1];
 
@@ -177,7 +177,7 @@ public class LevelGenerator {
         return visited.size() == expectedFree;
     }
 
-    public Set<Point> generateValidLevel(int obstacleCount, Point startPoint, int maxRetries){
+    public Set<Point> generateValidLevel(int obstacleCount, Point startPoint, int maxRetries) {
         if(startPoint == null)
             throw new NullPointerException("startPoint can not be null");
 

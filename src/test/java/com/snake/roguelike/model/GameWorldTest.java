@@ -133,7 +133,7 @@ public class GameWorldTest {
     }
 
     @Test
-    void testImmutabilityOfObstacles(){
+    void testImmutabilityOfObstacles() {
         Point snakeSpawn = new Point(10, 10);
         Snake snake = new Snake(snakeSpawn, 3, Direction.RIGHT);
         Set<Point> obstacles = new HashSet<>();
@@ -143,7 +143,7 @@ public class GameWorldTest {
     }
 
     @Test
-    void testNullDirectionKeepsCurrent(){
+    void testNullDirectionKeepsCurrent() {
         Point snakeSpawn = new Point(10, 10);
         Snake snake = new Snake(snakeSpawn, 3, Direction.RIGHT);
         Set<Point> obstacles = new HashSet<>();
@@ -159,7 +159,7 @@ public class GameWorldTest {
     }
 
     @Test
-    void testConstructionException(){
+    void testConstructionException() {
         Point snakeSpawn = new Point(10, 10);
         Snake snake = new Snake(snakeSpawn, 3, Direction.RIGHT);
         Set<Point> obstacles = new HashSet<>();
@@ -171,7 +171,7 @@ public class GameWorldTest {
     }
 
     @Test
-    void testGameOverStopsSimulation(){
+    void testGameOverStopsSimulation() {
         Point snakeSpawn = new Point(10, 10);
         Snake snake = new Snake(snakeSpawn, 3, Direction.RIGHT);
         Set<Point> obstacles = new HashSet<>();
@@ -190,7 +190,7 @@ public class GameWorldTest {
     }
 
     @Test
-    void testRestart(){
+    void testRestart() {
         Point snakeSpawn = new Point(10, 10);
         Snake snake = new Snake(snakeSpawn, 3, Direction.RIGHT);
         LevelGenerator level = new LevelGenerator(20, 20);
