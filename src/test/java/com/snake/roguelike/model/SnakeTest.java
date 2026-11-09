@@ -98,7 +98,7 @@ public class SnakeTest {
 
         List<Point> segments = snake.getSegments();
 
-        assertThrows(UnsupportedOperationException.class, () -> segments.clear());
+        assertThrows(UnsupportedOperationException.class, segments::clear);
 
         assertThrows(UnsupportedOperationException.class, () -> segments.add(new Point(0, 0)));
     }

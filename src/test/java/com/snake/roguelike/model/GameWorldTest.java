@@ -203,4 +203,29 @@ public class GameWorldTest {
         assertNotSame(newWorld, world);
         assertSame(GameState.PLAYING, newWorld.getState());
     }
+
+    @Test
+    void testInitialItemIsPresentInDefaultWorld() {
+        LevelGenerator level = new LevelGenerator(20, 20);
+        GameWorld world = GameWorld.createDefault(20, 20, level, 30);
+
+        assertTrue(world.getCurrentItem().isPresent());
+    }
+
+    @Test
+    void testEatAppleIncreasesScoreAndGrowsSnake() {
+        Point snakeSpawn = new Point(10, 10);
+        Snake snake = new Snake(snakeSpawn, 3, Direction.RIGHT);
+        LevelGenerator level = new LevelGenerator(20, 20);
+        Set<Point> obstacles = new HashSet<>();
+        GameWorld world = new GameWorld(20, 20, snake, obstacles, GameState.READY);
+
+        world.setItemForTesting(new Item.NormalApple(new Point(11, 10)));
+
+        world.start();
+        world.tick(Direction.RIGHT);
+
+        assertEquals(10, world.getScore());
+        assertEquals(4, world.getSnake().getLength());
+    }
 }
